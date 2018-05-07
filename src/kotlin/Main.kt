@@ -38,6 +38,10 @@ fun main(args: Array<String>) = runBlocking {
     outDirOption.isRequired = false
     options.addOption(outDirOption)
 
+    val outFileNameOption = Option("f", "image-file-name", true, "file name for downloaded image. Default from the server by default")
+    outFileNameOption.isRequired = false
+    options.addOption(outFileNameOption)
+
     val parser = DefaultParser()
     val formatter = HelpFormatter()
     val cmd: CommandLine
@@ -99,7 +103,15 @@ fun main(args: Array<String>) = runBlocking {
                 })
 
                 rootFolder.mkdirs()
-                ImageIO.write(finalImg, "png", File(rootFolder, latestInfo.file))
+
+                val outFile = File(rootFolder,
+                        if (cmd.hasOption(outFileNameOption.longOpt))
+                            cmd.getOptionValue(outFileNameOption.longOpt)
+                        else
+                            latestInfo.file)
+
+                Logger.i("Wring downloaded image to file: ${outFile.path}")
+                ImageIO.write(finalImg, "png", outFile)
             }
         }
 
