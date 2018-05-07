@@ -44,7 +44,7 @@ class Logger {
                 logOut.println(msgWithInfo)
                 logOut.flush()
             }
-            throw RuntimeException(msgWithInfo)
+            //throw RuntimeException(msgWithInfo)
         }
 
         fun getTimeString(deltaTime: Long = System.currentTimeMillis()): String {
