@@ -63,10 +63,12 @@ class Himawari(var checkMobileNet: Boolean = false,
                     ImageIO.write(finalImg, "png", outFile)
 
                     if (setDesktopBg) {
+                        Logger.i("Setting it as the desktop background.")
                         Runtime.getRuntime().exec("gsettings set org.gnome.desktop.background picture-uri ${outFile.toURI()}")
                     }
 
                     if (setLockScreenBg) {
+                        Logger.i("Setting it as the lock-screen background.")
                         Runtime.getRuntime().exec("gsettings set org.gnome.desktop.screensaver picture-uri ${outFile.toURI()}")
                     }
                 }
