@@ -3,6 +3,7 @@ import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.runBlocking
+import org.apache.commons.cli.*
 import java.awt.image.BufferedImage
 import java.io.BufferedReader
 import java.io.File
@@ -15,21 +16,56 @@ import javax.imageio.ImageIO
 
 
 fun main(args: Array<String>) = runBlocking {
+    val options = Options()
+
+    val levelOption = Option("l", "level", true, "increases the quality (and the size) of each tile. Possible values are 4, 8, 16, 20")
+    levelOption.isRequired = false
+    options.addOption(levelOption)
+
+    val delayOption = Option("d", "delay", true, "delay in ms between each check for a new image. Default is 1 second.")
+    delayOption.isRequired = false
+    options.addOption(delayOption)
+
+    val checkForModuleNetworkOption = Option("m", "check-mobile", false, "downloads only on a not cellular network. For now only \"O2 Deutschland\" is supported.")
+    checkForModuleNetworkOption.isRequired = false
+    options.addOption(checkForModuleNetworkOption)
+
+    val parser = DefaultParser()
+    val formatter = HelpFormatter()
+    val cmd: CommandLine
+
+    try {
+        cmd = parser.parse(options, args)
+    } catch (e: ParseException) {
+        e.message?.let { Logger.e(it) }
+        formatter.printHelp("himawari", options)
+
+        System.exit(1)
+        return@runBlocking
+    }
+
+    var level = 4
+    if (cmd.hasOption(levelOption.longOpt)) {
+        level = cmd.getOptionValue(levelOption.longOpt).toInt()
+    }
+
+    var delay = 1000
+    if (cmd.hasOption(delayOption.longOpt)) {
+        delay = cmd.getOptionValue(delayOption.longOpt).toInt()
+    }
+
     while (true) {
-        val ipData = getIpInfo()
         val latestInfo = getLatestInfo()
 
-        Logger.i("ISP: $ipData")
-        Logger.i("latestInfo: ${latestInfo.toString()}")
+        Logger.i("LatestInfo: ${latestInfo.toString()}")
 
         if (latestInfo?.equals(previousInfo) == false) {
             previousInfo = latestInfo
-            if (!mobileIsps.contains(ipData)) {
-                val size = 4
-                val matrix: Array<Array<Deferred<BufferedImage>>> = Array(size, { x ->
-                    Array(size, { y ->
+            if (cmd.hasOption(checkForModuleNetworkOption.longOpt) && isOnMobile()) {
+                val matrix: Array<Array<Deferred<BufferedImage>>> = Array(level, { x ->
+                    Array(level, { y ->
                         async {
-                            getImage(size, latestInfo.date, x, y)
+                            getImage(level, latestInfo.date, x, y)
                         }
                     })
                 })
@@ -52,8 +88,15 @@ fun main(args: Array<String>) = runBlocking {
             }
         }
 
-        delay(1000)
+        delay(delay)
     }
+}
+
+fun isOnMobile(): Boolean {
+    val ipData = getIpInfo()
+    Logger.i("ISP: $ipData")
+
+    return !mobileIsps.contains(ipData)
 }
 
 private fun getImage(size: Int = 8, date: Date, x: Int, y: Int): BufferedImage {
@@ -66,7 +109,6 @@ private fun getImage(size: Int = 8, date: Date, x: Int, y: Int): BufferedImage {
         ImageIO.read(inputStream)
     }
 }
-
 
 private fun getLatestInfo(): HimawariLatest? {
     val obj = URL(urlLatest)
@@ -87,14 +129,11 @@ private fun getLatestInfo(): HimawariLatest? {
     }
 }
 
-
 private fun getIpInfo(): String {
-    val url = "http://ip-api.com/line/?fields=isp"
-    val obj = URL(url)
+    val obj = URL(urlIpInfo)
 
     return with(obj.openConnection() as HttpURLConnection) {
-        println("Sending 'GET' request to URL : $url")
-        println("Response Code : $responseCode")
+        println("URL: $url; Response Code: $responseCode")
 
         BufferedReader(InputStreamReader(inputStream)).use {
             val response = StringBuilder()
@@ -112,6 +151,7 @@ private fun getIpInfo(): String {
 private val rootFolder = File("img/")
 private val gson = GsonBuilder().setDateFormat("yyyy-mm-dd HH:mm:ss").create()
 private val mobileIsps = arrayOf("O2 Deutschland")
+private const val urlIpInfo = "http://ip-api.com/line/?fields=isp"
 private const val urlLatest = "http://himawari8-dl.nict.go.jp/himawari8/img/D531106/latest.json"
 private var previousInfo: HimawariLatest? = null
 
