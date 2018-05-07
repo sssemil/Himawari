@@ -36,6 +36,10 @@ fun main(args: Array<String>) {
     setLockScreenBgOption.isRequired = false
     options.addOption(setLockScreenBgOption)
 
+    val saveLogsOption = Option("w", "save-logs", false, "save logs to file.")
+    saveLogsOption.isRequired = false
+    options.addOption(saveLogsOption)
+
     val parser = DefaultParser()
     val formatter = HelpFormatter()
     val cmd: CommandLine
@@ -50,11 +54,7 @@ fun main(args: Array<String>) {
         return
     }
 
-    var rootFolder = File("output/")
-    if (cmd.hasOption(outDirOption.longOpt)) {
-        rootFolder = File(cmd.getOptionValue(outDirOption.longOpt))
-    }
-    Logger.setOutputDirectory(rootFolder)
+    Logger.writeLogsToFile = cmd.hasOption(saveLogsOption.longOpt)
 
     val himawari = Himawari(checkMobileNet = cmd.hasOption(checkForModuleNetworkOption.longOpt),
             singleLoop = cmd.hasOption(singleLoopOption.longOpt),
