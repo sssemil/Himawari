@@ -30,6 +30,10 @@ fun main(args: Array<String>) = runBlocking {
     checkForModuleNetworkOption.isRequired = false
     options.addOption(checkForModuleNetworkOption)
 
+    val singleLoopOption = Option("s", "single-loop", false, "image will be downloaded only once.")
+    singleLoopOption.isRequired = false
+    options.addOption(singleLoopOption)
+
     val outDirOption = Option("o", "out-dir", true, "out directory for downloaded images and logs. \"output/\" is default.")
     outDirOption.isRequired = false
     options.addOption(outDirOption)
@@ -97,6 +101,11 @@ fun main(args: Array<String>) = runBlocking {
                 rootFolder.mkdirs()
                 ImageIO.write(finalImg, "png", File(rootFolder, latestInfo.file))
             }
+        }
+
+        if (cmd.hasOption(singleLoopOption.longOpt)) {
+            Logger.i("${singleLoopOption.longOpt} specified, exiting.")
+            break
         }
 
         delay(delay)
