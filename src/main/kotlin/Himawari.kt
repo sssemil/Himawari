@@ -58,8 +58,11 @@ class Himawari(var checkMobileNet: Boolean = false,
                     rootFolder.mkdirs()
 
                     val outFile = File(rootFolder, outFileName ?: latestInfo.file)
-
                     Logger.i("Wring downloaded image to file: ${outFile.toURI()}")
+                    if (outFile.exists()) {
+                        Logger.i("File exists, removing first.")
+                        outFile.delete()
+                    }
                     ImageIO.write(finalImg, "png", outFile)
 
                     if (setDesktopBg) {
