@@ -40,6 +40,10 @@ fun main(args: Array<String>) {
     saveLogsOption.isRequired = false
     options.addOption(saveLogsOption)
 
+    val helpOption = Option("h", "help", false, "show help.")
+    helpOption.isRequired = false
+    options.addOption(helpOption)
+
     val parser = DefaultParser()
     val formatter = HelpFormatter()
     val cmd: CommandLine
@@ -48,7 +52,14 @@ fun main(args: Array<String>) {
         cmd = parser.parse(options, args)
     } catch (e: ParseException) {
         e.message?.let { Logger.e(it) }
-        formatter.printHelp("himawari", options)
+        formatter.printHelp(EXECUTABLE_NAME, options)
+
+        System.exit(1)
+        return
+    }
+
+    if (cmd.hasOption(helpOption.longOpt)) {
+        formatter.printHelp(EXECUTABLE_NAME, options)
 
         System.exit(1)
         return
@@ -81,3 +92,5 @@ fun main(args: Array<String>) {
 
     himawari.run()
 }
+
+private const val EXECUTABLE_NAME = "himawari"
