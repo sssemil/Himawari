@@ -5,7 +5,8 @@ class Logger {
     companion object {
         private const val DEBUG = false
 
-        private val logFileName = "himawari_${System.currentTimeMillis()}.log"
+        private const val logFileName = "himawari.log"
+
         private var logOut = PrintWriter(File(logFileName))
         private val logLock = Object()
 
