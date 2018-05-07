@@ -11,8 +11,8 @@ class Logger {
         private val logLock = Object()
 
         fun d(msg: String) {
-            val msgWithInfo = "[DEBUG][${System.currentTimeMillis()}]: $msg"
             if (DEBUG) {
+                val msgWithInfo = "[DEBUG][${System.currentTimeMillis()}]: $msg"
                 synchronized(logLock) {
                     System.out.println(msgWithInfo)
                     logOut.println(msgWithInfo)
