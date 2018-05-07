@@ -42,6 +42,14 @@ fun main(args: Array<String>) = runBlocking {
     outFileNameOption.isRequired = false
     options.addOption(outFileNameOption)
 
+    val setDesktopBgOption = Option("db", "set-desktop", false, "downloads only on a not cellular network. For now only \"O2 Deutschland\" is supported.")
+    setDesktopBgOption.isRequired = false
+    options.addOption(setDesktopBgOption)
+
+    val setLockScreenBgOption = Option("sb", "set-lock-screen", false, "downloads only on a not cellular network. For now only \"O2 Deutschland\" is supported.")
+    setLockScreenBgOption.isRequired = false
+    options.addOption(setLockScreenBgOption)
+
     val parser = DefaultParser()
     val formatter = HelpFormatter()
     val cmd: CommandLine
@@ -110,8 +118,16 @@ fun main(args: Array<String>) = runBlocking {
                         else
                             latestInfo.file)
 
-                Logger.i("Wring downloaded image to file: ${outFile.path}")
+                Logger.i("Wring downloaded image to file: ${outFile.toURI()}")
                 ImageIO.write(finalImg, "png", outFile)
+
+                if (cmd.hasOption(setDesktopBgOption.longOpt)) {
+                    Runtime.getRuntime().exec("gsettings set org.gnome.desktop.background picture-uri ${outFile.toURI()}")
+                }
+
+                if (cmd.hasOption(setLockScreenBgOption.longOpt)) {
+                    Runtime.getRuntime().exec("gsettings set org.gnome.desktop.screensaver picture-uri ${outFile.toURI()}")
+                }
             }
         }
 
