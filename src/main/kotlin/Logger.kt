@@ -1,5 +1,9 @@
+import java.io.BufferedWriter
 import java.io.File
+import java.io.FileWriter
 import java.io.PrintWriter
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Logger {
     companion object {
@@ -14,7 +18,7 @@ class Logger {
 
         fun d(msg: String) {
             if (DEBUG) {
-                val msgWithInfo = "[DEBUG][${System.currentTimeMillis()}]: $msg"
+                val msgWithInfo = "[DEBUG][${getDateString()}]: $msg"
 
                 System.out.println(msgWithInfo)
 
@@ -28,7 +32,7 @@ class Logger {
         }
 
         fun i(msg: String) {
-            val msgWithInfo = "[INFO][${System.currentTimeMillis()}]: $msg"
+            val msgWithInfo = "[INFO][${getDateString()}]: $msg"
 
             System.out.println(msgWithInfo)
 
@@ -41,7 +45,7 @@ class Logger {
         }
 
         fun w(msg: String) {
-            val msgWithInfo = "[WARNING][${System.currentTimeMillis()}]: $msg"
+            val msgWithInfo = "[WARNING][${getDateString()}]: $msg"
 
             System.out.println(msgWithInfo)
 
@@ -54,7 +58,7 @@ class Logger {
         }
 
         fun e(msg: String) {
-            val msgWithInfo = "[ERROR][${System.currentTimeMillis()}]: $msg"
+            val msgWithInfo = "[ERROR][${getDateString()}]: $msg"
 
             System.err.println(msgWithInfo)
 
@@ -65,6 +69,12 @@ class Logger {
                 }
             }
             //throw RuntimeException(msgWithInfo)
+        }
+
+        private fun getDateString(): String {
+            val calendar = Calendar.getInstance()
+            val dateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
+            return dateFormat.format(calendar.time)
         }
 
         fun getTimeString(deltaTime: Long = System.currentTimeMillis()): String {
@@ -80,7 +90,7 @@ class Logger {
         }
 
         fun setOutputDirectory(rootFolder: File) {
-            logOut = PrintWriter(File(rootFolder, logFileName))
+            logOut = PrintWriter(BufferedWriter(FileWriter(File(rootFolder, logFileName), true)))
         }
     }
 }
