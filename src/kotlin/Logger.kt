@@ -10,41 +10,59 @@ class Logger {
         private var logOut = PrintWriter(File(logFileName))
         private val logLock = Object()
 
+        var writeLogsToFile = false
+
         fun d(msg: String) {
             if (DEBUG) {
                 val msgWithInfo = "[DEBUG][${System.currentTimeMillis()}]: $msg"
-                synchronized(logLock) {
-                    System.out.println(msgWithInfo)
-                    logOut.println(msgWithInfo)
-                    logOut.flush()
+
+                System.out.println(msgWithInfo)
+
+                if (writeLogsToFile) {
+                    synchronized(logLock) {
+                        logOut.println(msgWithInfo)
+                        logOut.flush()
+                    }
                 }
             }
         }
 
         fun i(msg: String) {
             val msgWithInfo = "[INFO][${System.currentTimeMillis()}]: $msg"
-            synchronized(logLock) {
-                System.out.println(msgWithInfo)
-                logOut.println(msgWithInfo)
-                logOut.flush()
+
+            System.out.println(msgWithInfo)
+
+            if (writeLogsToFile) {
+                synchronized(logLock) {
+                    logOut.println(msgWithInfo)
+                    logOut.flush()
+                }
             }
         }
 
         fun w(msg: String) {
             val msgWithInfo = "[WARNING][${System.currentTimeMillis()}]: $msg"
-            synchronized(logLock) {
-                System.out.println(msgWithInfo)
-                logOut.println(msgWithInfo)
-                logOut.flush()
+
+            System.out.println(msgWithInfo)
+
+            if (writeLogsToFile) {
+                synchronized(logLock) {
+                    logOut.println(msgWithInfo)
+                    logOut.flush()
+                }
             }
         }
 
         fun e(msg: String) {
             val msgWithInfo = "[ERROR][${System.currentTimeMillis()}]: $msg"
-            synchronized(logLock) {
-                System.err.println(msgWithInfo)
-                logOut.println(msgWithInfo)
-                logOut.flush()
+
+            System.err.println(msgWithInfo)
+
+            if (writeLogsToFile) {
+                synchronized(logLock) {
+                    logOut.println(msgWithInfo)
+                    logOut.flush()
+                }
             }
             //throw RuntimeException(msgWithInfo)
         }
