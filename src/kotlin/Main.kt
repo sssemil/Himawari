@@ -116,7 +116,7 @@ fun main(args: Array<String>) = runBlocking {
         }
 
         if (cmd.hasOption(singleLoopOption.longOpt)) {
-            Logger.i("${singleLoopOption.longOpt} specified, exiting.")
+            Logger.i("${singleLoopOption.longOpt} parameter specified, exiting.")
             break
         }
 
