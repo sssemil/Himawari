@@ -5,7 +5,8 @@ class Logger {
     companion object {
         private const val DEBUG = false
 
-        private val logOut = PrintWriter(File("himawari_${System.currentTimeMillis()}.log"))
+        private val logFileName = "himawari_${System.currentTimeMillis()}.log"
+        private var logOut = PrintWriter(File(logFileName))
         private val logLock = Object()
 
         fun d(msg: String) {
@@ -57,6 +58,10 @@ class Logger {
             holder -= hour * 1000 * 60 * 24
 
             return String.format("%02dh:%02dm:%02ds:%04dms", hour, minute, second, holder)
+        }
+
+        fun setOutputDirectory(rootFolder: File) {
+            logOut = PrintWriter(File(rootFolder, logFileName))
         }
     }
 }

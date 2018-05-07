@@ -30,6 +30,10 @@ fun main(args: Array<String>) = runBlocking {
     checkForModuleNetworkOption.isRequired = false
     options.addOption(checkForModuleNetworkOption)
 
+    val outDirOption = Option("o", "out-dir", true, "out directory for downloaded images and logs. \"output/\" is default.")
+    outDirOption.isRequired = false
+    options.addOption(outDirOption)
+
     val parser = DefaultParser()
     val formatter = HelpFormatter()
     val cmd: CommandLine
@@ -43,6 +47,12 @@ fun main(args: Array<String>) = runBlocking {
         System.exit(1)
         return@runBlocking
     }
+
+    var rootFolder = File("output/")
+    if (cmd.hasOption(outDirOption.longOpt)) {
+        rootFolder = File(cmd.getOptionValue(outDirOption.longOpt))
+    }
+    Logger.setOutputDirectory(rootFolder)
 
     var level = 4
     if (cmd.hasOption(levelOption.longOpt)) {
@@ -70,7 +80,7 @@ fun main(args: Array<String>) = runBlocking {
                     })
                 })
 
-                val type = matrix[0][0].await().type
+                val type = BufferedImage.TYPE_3BYTE_BGR
                 val chunkWidth = matrix[0][0].await().width
                 val chunkHeight = matrix[0][0].await().height
 
@@ -84,6 +94,7 @@ fun main(args: Array<String>) = runBlocking {
                     })
                 })
 
+                rootFolder.mkdirs()
                 ImageIO.write(finalImg, "png", File(rootFolder, latestInfo.file))
             }
         }
@@ -92,7 +103,7 @@ fun main(args: Array<String>) = runBlocking {
     }
 }
 
-fun isOnMobile(): Boolean {
+private fun isOnMobile(): Boolean {
     val ipData = getIpInfo()
     Logger.i("ISP: $ipData")
 
@@ -148,7 +159,6 @@ private fun getIpInfo(): String {
     }
 }
 
-private val rootFolder = File("img/")
 private val gson = GsonBuilder().setDateFormat("yyyy-mm-dd HH:mm:ss").create()
 private val mobileIsps = arrayOf("O2 Deutschland")
 private const val urlIpInfo = "http://ip-api.com/line/?fields=isp"
