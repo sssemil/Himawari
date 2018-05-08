@@ -4,6 +4,10 @@ import java.io.File
 fun main(args: Array<String>) {
     val options = Options()
 
+    val helpOption = Option("h", "help", false, "show help.")
+    helpOption.isRequired = false
+    options.addOption(helpOption)
+
     val levelOption = Option("l", "level", true, "increases the quality (and the size) of each tile. Possible values are 4, 8, 16, 20")
     levelOption.isRequired = false
     options.addOption(levelOption)
@@ -39,10 +43,6 @@ fun main(args: Array<String>) {
     val saveLogsOption = Option("w", "save-logs", false, "save logs to file.")
     saveLogsOption.isRequired = false
     options.addOption(saveLogsOption)
-
-    val helpOption = Option("h", "help", false, "show help.")
-    helpOption.isRequired = false
-    options.addOption(helpOption)
 
     val parser = DefaultParser()
     val formatter = HelpFormatter()
