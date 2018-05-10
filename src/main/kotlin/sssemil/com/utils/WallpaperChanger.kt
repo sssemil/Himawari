@@ -10,11 +10,9 @@ import java.io.File
 
 class WallpaperChanger {
 
-    val osName = System.getProperty("os.name")
+    private val osName = System.getProperty("os.name")
 
     fun setDesktop(file: File) {
-        Logger.i("Running on: $osName")
-
         when {
             osName.startsWith("Windows") -> SPI.INSTANCE.SystemParametersInfo(
                     UINT_PTR(SPI.SPI_SETDESKWALLPAPER),
@@ -28,8 +26,6 @@ class WallpaperChanger {
     }
 
     fun setLockScreen(file: File) {
-        Logger.i("Running on: $osName")
-
         when {
             osName.startsWith("Windows") -> onUnsupportedLockScreen(osName)
             osName.startsWith("Linux") -> // TODO not all Linux is gnome
@@ -70,5 +66,9 @@ class WallpaperChanger {
                     Library.OPTION_FUNCTION_MAPPER to W32APIFunctionMapper.UNICODE
             )) as SPI
         }
+    }
+
+    init {
+        Logger.i("Running on: $osName")
     }
 }
