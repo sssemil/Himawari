@@ -47,7 +47,7 @@ kotlin {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'MainKt'
+        attributes 'Main-Class': 'sssemil.com.MainKt'
     }
 
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
