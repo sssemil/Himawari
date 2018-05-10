@@ -1,11 +1,6 @@
 package sssemil.com.utils
 
-import com.sun.jna.Library
-import com.sun.jna.Native
 import com.sun.jna.platform.win32.WinDef.UINT_PTR
-import com.sun.jna.win32.StdCallLibrary
-import com.sun.jna.win32.W32APIFunctionMapper
-import com.sun.jna.win32.W32APITypeMapper
 import java.io.File
 
 class WallpaperChanger {
@@ -42,29 +37,6 @@ class WallpaperChanger {
 
         private fun onUnsupportedLockScreen(osName: String) {
             Logger.w("Setting lock-screen wallpaper is not supported on $osName.")
-        }
-    }
-
-    interface SPI : StdCallLibrary {
-
-        fun SystemParametersInfo(
-                uiAction: UINT_PTR,
-                uiParam: UINT_PTR,
-                pvParam: String,
-                fWinIni: UINT_PTR
-        ): Boolean
-
-        companion object {
-
-            //from MSDN article
-            val SPI_SETDESKWALLPAPER: Long = 20
-            val SPIF_UPDATEINIFILE: Long = 0x01
-            val SPIF_SENDWININICHANGE: Long = 0x02
-
-            val INSTANCE = Native.loadLibrary("user32", SPI::class.java, hashMapOf(
-                    Library.OPTION_TYPE_MAPPER to W32APITypeMapper.UNICODE,
-                    Library.OPTION_FUNCTION_MAPPER to W32APIFunctionMapper.UNICODE
-            )) as SPI
         }
     }
 
