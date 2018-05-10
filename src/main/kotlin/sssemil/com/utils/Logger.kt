@@ -92,7 +92,9 @@ class Logger {
         }
 
         fun setOutputDirectory(rootFolder: File) {
-            logOut = PrintWriter(BufferedWriter(FileWriter(File(rootFolder, logFileName), true)))
+            rootFolder.mkdirs()
+            val logFile = File(rootFolder, logFileName)
+            logOut = PrintWriter(BufferedWriter(FileWriter(logFile, true)))
         }
     }
 }
