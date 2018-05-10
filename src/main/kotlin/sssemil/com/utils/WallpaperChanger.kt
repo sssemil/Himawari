@@ -23,7 +23,7 @@ class WallpaperChanger {
                         UINT_PTR(SPI.SPIF_UPDATEINIFILE or SPI.SPIF_SENDWININICHANGE))
                 osName.startsWith("Linux") -> // TODO not all Linux is gnome
                     Runtime.getRuntime().exec("gsettings setDesktop org.gnome.desktop.background picture-uri ${file.toURI()}")
-                else -> onUnsupportedDesktop()
+                else -> onUnsupportedDesktop(osName)
             }
         }
 
@@ -32,19 +32,19 @@ class WallpaperChanger {
             Logger.i("Running on: $osName")
 
             when {
-                osName.startsWith("Windows") -> onUnsupportedLockScreen()
+                osName.startsWith("Windows") -> onUnsupportedLockScreen(osName)
                 osName.startsWith("Linux") -> // TODO not all Linux is gnome
                     Runtime.getRuntime().exec("gsettings setDesktop org.gnome.desktop.screensaver picture-uri ${file.toURI()}")
-                else -> onUnsupportedLockScreen()
+                else -> onUnsupportedLockScreen(osName)
             }
         }
 
-        private fun onUnsupportedDesktop() {
-            Logger.w("Setting desktop wallpaper is not supported on this platform.")
+        private fun onUnsupportedDesktop(osName: String) {
+            Logger.w("Setting desktop wallpaper is not supported on $osName.")
         }
 
-        private fun onUnsupportedLockScreen() {
-            Logger.w("Setting lock-screen wallpaper is not supported on this platform.")
+        private fun onUnsupportedLockScreen(osName: String) {
+            Logger.w("Setting lock-screen wallpaper is not supported on $osName.")
         }
     }
 
