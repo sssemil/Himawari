@@ -93,10 +93,10 @@ class Himawari(var checkMobileNet: Boolean = false,
     }
 
     private fun getLatestInfo(): HimawariLatest? {
-        val obj = URL(urlLatest)
+        val obj = URL(URL_LATEST)
 
         return with(obj.openConnection() as HttpURLConnection) {
-            Logger.i("URL: ${urlLatest}; Response Code: $responseCode")
+            Logger.i("URL: $URL_LATEST; Response Code: $responseCode")
 
             BufferedReader(InputStreamReader(inputStream)).use {
                 val response = StringBuilder()
@@ -112,12 +112,6 @@ class Himawari(var checkMobileNet: Boolean = false,
     }
 
     companion object {
-        private fun isOnMobile(): Boolean {
-            val ipData = getIpInfo()
-            Logger.i("ISP: $ipData")
-
-            return !mobileIsps.contains(ipData)
-        }
 
         private fun getImage(size: Int = 8, date: Date, x: Int, y: Int): BufferedImage {
             val dateFormatted = SimpleDateFormat("yyyy/MM/dd/HHmmss").format(date)
@@ -130,8 +124,8 @@ class Himawari(var checkMobileNet: Boolean = false,
             }
         }
 
-        private fun getIpInfo(): String {
-            val obj = URL(urlIpInfo)
+        private fun isOnMobile(): Boolean {
+            val obj = URL(URL_IP_CELLULAR)
 
             return with(obj.openConnection() as HttpURLConnection) {
                 println("URL: $url; Response Code: $responseCode")
@@ -144,14 +138,13 @@ class Himawari(var checkMobileNet: Boolean = false,
                         response.append(inputLine)
                         inputLine = it.readLine()
                     }
-                    return@with response.toString()
+                    return@with response.toString().toBoolean()
                 }
             }
         }
 
-        private val mobileIsps = arrayOf("O2 Deutschland")
-        private const val urlIpInfo = "http://ip-api.com/line/?fields=isp"
-        private const val urlLatest = "http://himawari8-dl.nict.go.jp/himawari8/img/D531106/latest.json"
+        private const val URL_IP_CELLULAR = "http://ip-api.com/line/?fields=mobile"
+        private const val URL_LATEST = "http://himawari8-dl.nict.go.jp/himawari8/img/D531106/latest.json"
     }
 }
 
