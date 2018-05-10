@@ -1,4 +1,7 @@
+package sssemil.com
+
 import org.apache.commons.cli.*
+import sssemil.com.utils.Logger
 import java.io.File
 
 fun main(args: Array<String>) {
@@ -32,11 +35,11 @@ fun main(args: Array<String>) {
     outFileNameOption.isRequired = false
     options.addOption(outFileNameOption)
 
-    val setDesktopBgOption = Option("db", "set-desktop", false, "downloads only on a not cellular network. For now only \"O2 Deutschland\" is supported.")
+    val setDesktopBgOption = Option("db", "setDesktop-desktop", false, "downloads only on a not cellular network. For now only \"O2 Deutschland\" is supported.")
     setDesktopBgOption.isRequired = false
     options.addOption(setDesktopBgOption)
 
-    val setLockScreenBgOption = Option("sb", "set-lock-screen", false, "downloads only on a not cellular network. For now only \"O2 Deutschland\" is supported.")
+    val setLockScreenBgOption = Option("sb", "setDesktop-lock-screen", false, "downloads only on a not cellular network. For now only \"O2 Deutschland\" is supported.")
     setLockScreenBgOption.isRequired = false
     options.addOption(setLockScreenBgOption)
 

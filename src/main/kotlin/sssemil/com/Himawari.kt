@@ -1,8 +1,12 @@
+package sssemil.com
+
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.runBlocking
+import sssemil.com.utils.Logger
+import sssemil.com.utils.WallpaperChanger
 import java.awt.image.BufferedImage
 import java.io.BufferedReader
 import java.io.File
@@ -20,7 +24,7 @@ class Himawari(var checkMobileNet: Boolean = false,
                var outFileName: String? = null,
                var level: Int = 4,
                var delay: Int = 1000,
-               var rootFolder: File = File("./")) {
+               var rootFolder: File = File(".")) {
     private var previousInfo: HimawariLatest? = null
     private val gson = GsonBuilder().setDateFormat("yyyy-mm-dd HH:mm:ss").create()
 
@@ -67,12 +71,12 @@ class Himawari(var checkMobileNet: Boolean = false,
 
                     if (setDesktopBg) {
                         Logger.i("Setting it as the desktop background.")
-                        Runtime.getRuntime().exec("gsettings set org.gnome.desktop.background picture-uri ${outFile.toURI()}")
+                        WallpaperChanger.setDesktop(outFile)
                     }
 
                     if (setLockScreenBg) {
                         Logger.i("Setting it as the lock-screen background.")
-                        Runtime.getRuntime().exec("gsettings set org.gnome.desktop.screensaver picture-uri ${outFile.toURI()}")
+                        WallpaperChanger.setLockScreen(outFile)
                     }
                 }
             }
@@ -90,7 +94,7 @@ class Himawari(var checkMobileNet: Boolean = false,
         val obj = URL(urlLatest)
 
         return with(obj.openConnection() as HttpURLConnection) {
-            Logger.i("URL: $urlLatest; Response Code: $responseCode")
+            Logger.i("URL: ${urlLatest}; Response Code: $responseCode")
 
             BufferedReader(InputStreamReader(inputStream)).use {
                 val response = StringBuilder()
