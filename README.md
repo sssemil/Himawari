@@ -44,3 +44,11 @@ Here's an example to save logs, check for moble network, use level 8 quality,
 run it once, set as desktop and lockscreen background, and save to ~/Pictures/.
 
     java -jar ./Himawari-1.0.jar -w -m -l 8 -s -db -sb -o ~/Pictures/
+    
+To run it every 10 minutes you can use crontab:
+
+    crontab -e
+
+This will open crontab editing. Then add this line:
+
+    */10 * * * * java -jar ./Himawari-1.0.jar -w -m -l 8 -s -db -sb -o ~/Pictures/
