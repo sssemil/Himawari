@@ -1,6 +1,5 @@
 package sssemil.com.utils
 
-import com.sun.jna.platform.win32.WinDef.UINT_PTR
 import java.io.File
 
 class WallpaperChanger {
@@ -9,28 +8,32 @@ class WallpaperChanger {
 
     fun setDesktop(file: File) {
         when {
-            osName.startsWith("Windows") -> SPI.INSTANCE.SystemParametersInfo(
-                    UINT_PTR(SPI.SPI_SETDESKWALLPAPER),
-                    UINT_PTR(0),
-                    file.absolutePath,
-                    UINT_PTR(SPI.SPIF_UPDATEINIFILE or SPI.SPIF_SENDWININICHANGE))
-            osName.startsWith("Linux") -> // TODO not all Linux is gnome
+            osName.startsWith("Windows") -> {
+                val result = SPI.setDesktopWallpaper(file)
+                Logger.i("Setting desktop wallpaper result: $result")
+            }
+            osName.startsWith("Linux") -> {
+                // TODO not all Linux is gnome
                 Runtime.getRuntime().exec("gsettings setDesktop org.gnome.desktop.background picture-uri ${file.toURI()}")
+            }
             else -> onUnsupportedDesktop(osName)
         }
     }
 
     fun setLockScreen(file: File) {
         when {
-            osName.startsWith("Windows") -> onUnsupportedLockScreen(osName)
-            osName.startsWith("Linux") -> // TODO not all Linux is gnome
+            osName.startsWith("Windows") -> {
+                onUnsupportedLockScreen(osName)
+            }
+            osName.startsWith("Linux") -> {
+                // TODO not all Linux is gnome
                 Runtime.getRuntime().exec("gsettings setDesktop org.gnome.desktop.screensaver picture-uri ${file.toURI()}")
+            }
             else -> onUnsupportedLockScreen(osName)
         }
     }
 
     companion object {
-
         private fun onUnsupportedDesktop(osName: String) {
             Logger.w("Setting desktop wallpaper is not supported on $osName.")
         }
