@@ -69,14 +69,16 @@ class Himawari(var checkMobileNet: Boolean = false,
                     }
                     ImageIO.write(finalImg, "png", outFile)
 
+                    val wallpaperChanger = WallpaperChanger()
+
                     if (setDesktopBg) {
                         Logger.i("Setting it as the desktop background.")
-                        WallpaperChanger.setDesktop(outFile)
+                        wallpaperChanger.setDesktop(outFile)
                     }
 
                     if (setLockScreenBg) {
                         Logger.i("Setting it as the lock-screen background.")
-                        WallpaperChanger.setLockScreen(outFile)
+                        wallpaperChanger.setLockScreen(outFile)
                     }
                 }
             }
