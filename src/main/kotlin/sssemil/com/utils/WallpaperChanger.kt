@@ -1,5 +1,6 @@
 package sssemil.com.utils
 
+import sssemil.com.utils.windows.SPI
 import java.io.File
 
 class WallpaperChanger {

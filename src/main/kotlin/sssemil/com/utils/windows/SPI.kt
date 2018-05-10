@@ -1,4 +1,4 @@
-package sssemil.com.utils
+package sssemil.com.utils.windows
 
 import com.sun.jna.Library
 import com.sun.jna.Native
@@ -20,7 +20,7 @@ interface SPI : StdCallLibrary {
     companion object {
 
         fun setDesktopWallpaper(file: File): Boolean {
-            return SPI.INSTANCE.SystemParametersInfo(
+            return INSTANCE.SystemParametersInfo(
                     WinDef.UINT_PTR(SPI_SETDESKWALLPAPER),
                     WinDef.UINT_PTR(0),
                     file.absolutePath,
