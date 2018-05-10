@@ -23,6 +23,8 @@ dependencies {
     compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.22.5'
     compile 'com.google.code.gson:gson:2.8.4'
     compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
+    compile 'net.java.dev.jna:jna:4.5.1'
+    compile 'net.java.dev.jna:jna-platform:4.5.1'
 }
 
 compileKotlin {
