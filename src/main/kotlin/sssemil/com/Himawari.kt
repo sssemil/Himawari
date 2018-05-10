@@ -36,7 +36,7 @@ class Himawari(var checkMobileNet: Boolean = false,
 
             if (latestInfo?.equals(previousInfo) == false) {
                 previousInfo = latestInfo
-                if (checkMobileNet && isOnMobile()) {
+                if (checkMobileNet && !isOnMobile()) {
                     val matrix: Array<Array<Deferred<BufferedImage>>> = Array(level, { x ->
                         Array(level, { y ->
                             async {
@@ -138,7 +138,12 @@ class Himawari(var checkMobileNet: Boolean = false,
                         response.append(inputLine)
                         inputLine = it.readLine()
                     }
-                    return@with response.toString().toBoolean()
+
+                    val isOnMobile = response.toString().toBoolean()
+
+                    Logger.i("Cellular: $isOnMobile")
+
+                    return@with isOnMobile
                 }
             }
         }
