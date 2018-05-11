@@ -22,7 +22,7 @@ class EnvDetector {
                             if (sessionName in arrayOf("gnome", "unity", "cinnamon", "mate", "xfce4", "lxde", "fluxbox",
                                             "blackbox", "openbox", "icewm", "jwm", "afterstep", "trinity", "kde", "pantheon",
                                             "gnome-classic", "i3")) {
-                                return Env.valueOf(sessionName)
+                                return Env.valueOf(sessionName.replace("-", "_").toUpperCase())
                             }
 
                             if (sessionName.contains("xfce") || sessionName.startsWith("xubuntu")) {
