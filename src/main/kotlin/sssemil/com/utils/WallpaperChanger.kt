@@ -96,6 +96,6 @@ class WallpaperChanger {
     }
 
     init {
-        Logger.i("Running on: ${detectedEnv.name}")
+        Logger.i("Running on: ${detectedEnv.summary()}")
     }
 }
