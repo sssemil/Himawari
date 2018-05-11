@@ -54,4 +54,4 @@ This will open crontab editing. Then add this line:
 
 Acknowledgments
 ---------------
-Based on @boramalper's work - https://github.com/boramalper/himawaripy
+Based on - https://github.com/boramalper/himawaripy
