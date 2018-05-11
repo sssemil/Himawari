@@ -1,16 +1,15 @@
 # Himawari
-Himawari-8 images downloader.
-
+Himawari-8 images downloader, and as desktop background setter.
 
 Building
-========
+--------
 
 To build jar run:
 
     ./gradlew jar
     
 Usage
-=====
+-----
 
  -d,--delay <arg>             delay in ms between each check for a new
                               image. Default is 1 second.
@@ -39,7 +38,7 @@ Usage
 -w,--save-logs               save logs to file.
 
 Running
-=======
+-------
 Here's an example to save logs, check for moble network, use level 8 quality,
 run it once, set as desktop and lockscreen background, and save to ~/Pictures/.
 
@@ -52,3 +51,7 @@ To run it every 10 minutes you can use crontab:
 This will open crontab editing. Then add this line:
 
     */10 * * * * java -jar ./Himawari-1.0.jar -w -m -l 8 -s -db -sb -o ~/Pictures/
+
+Acknowledgments
+---------------
+Based on @boramalper's work - https://github.com/boramalper/himawaripy
