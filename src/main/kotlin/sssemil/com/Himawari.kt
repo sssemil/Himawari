@@ -29,6 +29,8 @@ class Himawari(var checkMobileNet: Boolean = false,
     private val gson = GsonBuilder().setDateFormat("yyyy-mm-dd HH:mm:ss").create()
 
     fun run() = runBlocking {
+        val wallpaperChanger = WallpaperChanger()
+
         while (true) {
             val latestInfo = getLatestInfo()
 
@@ -68,8 +70,6 @@ class Himawari(var checkMobileNet: Boolean = false,
                         outFile.delete()
                     }
                     ImageIO.write(finalImg, "png", outFile)
-
-                    val wallpaperChanger = WallpaperChanger()
 
                     if (setDesktopBg) {
                         Logger.i("Setting it as the desktop background.")
