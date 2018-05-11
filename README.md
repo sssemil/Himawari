@@ -26,7 +26,6 @@ Usage
                               tile. Possible values are 4, 8, 16, 20
 
 -m,--check-mobile            downloads only on a not cellular network.
-                              For now only "O2 Deutschland" is supported.
 
 -o,--out-dir <arg>           out directory for downloaded images and
                               logs. "output/" is default.
