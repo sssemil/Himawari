@@ -47,6 +47,10 @@ fun main(args: Array<String>) {
     saveLogsOption.isRequired = false
     options.addOption(saveLogsOption)
 
+    val noGuiOption = Option("ng", "no-gui", false, "don't start GUI.")
+    noGuiOption.isRequired = false
+    options.addOption(noGuiOption)
+
     val parser = DefaultParser()
     val formatter = HelpFormatter()
     val cmd: CommandLine
