@@ -39,7 +39,7 @@ fun main(args: Array<String>) {
     setDesktopBgOption.isRequired = false
     options.addOption(setDesktopBgOption)
 
-    val setLockScreenBgOption = Option("sb", "setDesktop-lock-screen", false, "downloads only on a not cellular network. For now only \"O2 Deutschland\" is supported.")
+    val setLockScreenBgOption = Option("sb", "setDesktop-lock-screen", false, "downloads only on a not cellular network.")
     setLockScreenBgOption.isRequired = false
     options.addOption(setLockScreenBgOption)
 
