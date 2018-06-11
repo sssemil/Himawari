@@ -19,7 +19,7 @@ fun main(args: Array<String>) {
     delayOption.isRequired = false
     options.addOption(delayOption)
 
-    val checkForModuleNetworkOption = Option("m", "check-mobile", false, "downloads only on a not cellular network. For now only \"O2 Deutschland\" is supported.")
+    val checkForModuleNetworkOption = Option("m", "check-mobile", false, "downloads only on a not cellular network.")
     checkForModuleNetworkOption.isRequired = false
     options.addOption(checkForModuleNetworkOption)
 
@@ -35,11 +35,11 @@ fun main(args: Array<String>) {
     outFileNameOption.isRequired = false
     options.addOption(outFileNameOption)
 
-    val setDesktopBgOption = Option("db", "setDesktop-desktop", false, "downloads only on a not cellular network.")
+    val setDesktopBgOption = Option("db", "set-desktop", false, "set as desktop background.")
     setDesktopBgOption.isRequired = false
     options.addOption(setDesktopBgOption)
 
-    val setLockScreenBgOption = Option("sb", "setDesktop-lock-screen", false, "downloads only on a not cellular network.")
+    val setLockScreenBgOption = Option("sb", "set-lock-screen", false, "set as lock-screen background.")
     setLockScreenBgOption.isRequired = false
     options.addOption(setLockScreenBgOption)
 
